@@ -29,9 +29,9 @@ init:
   - ps: docker-compose --version
   
 before_build:
-  - ps: dotnet restore TelegramToWordPress.sln -v m 
+  - ps: dotnet restore ProxyApi.sln -v m 
 build_script:
-  - ps: dotnet build TelegramToWordPress.sln -v m -c Release
+  - ps: dotnet build ProxyApi.sln -v m -c Release
   # create image
   - ps: docker-compose build
 

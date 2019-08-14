@@ -14,7 +14,8 @@ namespace ProxyApi.Controllers
     public class TelegramController : ControllerBase
     {
         [HttpPost("send")]
-        public async Task<string> NewMessage(NewTelegramMessage newTelegramMessage)
+        [Consumes("multipart/form-data")]
+        public async Task<string> NewMessage([FromForm] NewTelegramMessage newTelegramMessage)
         {
             var botClient = new Telegram.Bot.TelegramBotClient(newTelegramMessage.BotToken);
             var me = await botClient.GetMeAsync();

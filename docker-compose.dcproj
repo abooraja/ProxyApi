@@ -5,7 +5,7 @@
     <DockerTargetOS>Linux</DockerTargetOS>
     <ProjectGuid>80762344-046b-43c3-8090-6414db8087e5</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
-    <DockerServiceUrl>{Scheme}://localhost:{ServicePort}/api/values</DockerServiceUrl>
+    <DockerServiceUrl>{Scheme}://localhost:{ServicePort}/api/check</DockerServiceUrl>
     <DockerServiceName>proxyapi</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>

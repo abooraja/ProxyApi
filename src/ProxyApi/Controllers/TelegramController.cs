@@ -14,23 +14,28 @@ namespace ProxyApi.Controllers
     public class TelegramController : ControllerBase
     {
         [HttpPost("send")]
-        [Consumes("multipart/form-data")]
-        public async Task<string> NewMessage([FromForm] NewTelegramMessage newTelegramMessage)
+        public async Task<IActionResult> NewMessage([FromForm]NewTelegramMessage newTelegramMessage)
         {
-            var botClient = new Telegram.Bot.TelegramBotClient(newTelegramMessage.BotToken);
-            var me = await botClient.GetMeAsync();
+            try
+            {
+                var botClient = new Telegram.Bot.TelegramBotClient(newTelegramMessage.BotToken);
+                var me = await botClient.GetMeAsync();
 
-            if (newTelegramMessage.File != null)
-            {
-                var memoryStream = new MemoryStream();
-                await newTelegramMessage.File.CopyToAsync(memoryStream);
-                var resultPhotoMessage = await botClient.SendPhotoAsync(newTelegramMessage.ChatId, memoryStream, newTelegramMessage.Text);
-                return resultPhotoMessage.MessageId.ToString();
+                if (newTelegramMessage.File != null)
+                {
+                    var resultPhotoMessage = await botClient.SendPhotoAsync(newTelegramMessage.ChatId, new InputMedia(newTelegramMessage.File.OpenReadStream(), newTelegramMessage.File.FileName), newTelegramMessage.Text);
+                    return Ok(resultPhotoMessage.MessageId);
+                }
+                else
+                {
+                    var resultTextMessage = await botClient.SendTextMessageAsync(newTelegramMessage.ChatId, newTelegramMessage.Text);
+                    return Ok(resultTextMessage.MessageId);
+                }
             }
-            else
+            catch (Exception e)
             {
-                var resultTextMessage = await botClient.SendTextMessageAsync(newTelegramMessage.ChatId, newTelegramMessage.Text);
-                return resultTextMessage.MessageId.ToString();
+                Console.WriteLine(e);
+                return BadRequest(e.Message);
             }
         }
     }

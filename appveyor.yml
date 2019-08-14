@@ -43,5 +43,5 @@ test_script:
 deploy_script:
   # tag image and push to docker hub
   - ps: docker login -u="$env:DOCKER_USER" -p="$env:DOCKER_PASS"
-  - ps: docker tag proxy-api  abolfazlrajabpour/proxy-api:latest
+  - ps: docker tag proxyapi  abolfazlrajabpour/proxy-api:latest
   - ps: docker push abolfazlrajabpour/proxy-api:latest

@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  proxyapi:
+    image: ${DOCKER_REGISTRY-}proxyapi
+    build:
+      context: .
+      dockerfile: src/ProxyApi/Dockerfile

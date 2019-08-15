@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Telegram.Bot.Types;
 
 namespace ProxyApi.Controllers
@@ -13,11 +14,20 @@ namespace ProxyApi.Controllers
     [ApiController]
     public class TelegramController : ControllerBase
     {
+        private readonly ILogger<TelegramController> _logger;
+
+        public TelegramController(ILogger<TelegramController> logger)
+        {
+            _logger = logger;
+        }
+
         [HttpPost("send")]
         public async Task<IActionResult> NewMessage([FromForm]NewTelegramMessage newTelegramMessage)
         {
             try
             {
+                _logger.LogInformation($"{newTelegramMessage.ChatId} : {newTelegramMessage.Text}");
+
                 var botClient = new Telegram.Bot.TelegramBotClient(newTelegramMessage.BotToken);
                 var me = await botClient.GetMeAsync();
 
@@ -34,7 +44,7 @@ namespace ProxyApi.Controllers
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                _logger.LogError(e, e.Message);
                 return BadRequest(e.Message);
             }
         }

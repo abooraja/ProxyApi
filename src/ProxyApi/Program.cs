@@ -19,12 +19,6 @@ namespace ProxyApi
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .ConfigureLogging(builder =>
-                {
-                    builder.ClearProviders();
-                    builder.AddConsole();
-                    builder.AddDebug();
-                })
                 .UseStartup<Startup>();
     }
 }
